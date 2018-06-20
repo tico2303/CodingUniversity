@@ -14,28 +14,31 @@ template <class T>
 class Array{
 
     private:
-    int size;
-    int capacity;
-    T *data;
-    void resize();
+        int size;
+        int capacity;
+        T *data;
+        void resize();
 
     public:
-    Array();
-    Array(int cap);
-    ~Array();
-    
-    T at(int index);
-    void push(T item);
-    bool is_empty(){return this->size == 0;}
-    void print_array();
-    void insert(int index, T item);
-    void prepend(T item);
-    T pop();
-    T &operator[](int i);
+        Array();
+        Array(int cap);
+        ~Array();
+        
+        T at(int index);
+        void push(T item);
+        bool is_empty(){return this->size == 0;}
+        void print_array();
+        void insert(int index, T item);
+        void prepend(T item);
+        T pop();
+        T &operator[](int i);
+        void delete_el(int index);
+        void remove(T item);
+        int find(T item);
 
-    //Accessor
-    int get_size(){return this->size;}
-    int get_capacity(){return this->capacity;}
+        //Accessor
+        int get_size(){return this->size;}
+        int get_capacity(){return this->capacity;}
 
 };
 //Tests
@@ -44,8 +47,8 @@ bool test_push();
 Array<int>* setup();
 bool test_insert();
 bool test_pop();
-
-
-
+bool test_delete_el();
+bool test_find();
+bool test_remove();
 #endif//ARRAY_H
 

@@ -67,6 +67,7 @@ void Array<T>::prepend( T item){
 }
 
 template<class T>
+//Pop front
 T Array<T>::pop(){
     assert(this->size >0);
     T item = *(this->data);
@@ -76,12 +77,41 @@ T Array<T>::pop(){
     this->size--;
     return item;
 }
+
 template<class T>
 T &Array<T>::operator[](int i){
     return *(this->data +i);
 }
 
+template<class T>
+void Array<T>::delete_el(int index){
+    assert((index < this->size) and (index >= 0));
+    for(int i=index; i<this->size-1; i++){
+        *(this->data + i) = *(this->data +i +1);
+    }
+    *(this->data +this->size -1) = 0;
+    this->size--;
+}
 
+template<class T>
+void Array<T>::remove(T item){
+    for(int i=0; i< this->size; i++){
+        if(*(this->data+i) == item){
+            this->delete_el(i);
+        }
+    }
+
+}
+
+template<class T>
+int Array<T>::find(T item){
+    for(int i=0; i< this->size-1; i++){
+        if(*(this->data+i)==item){
+            return i;
+        }
+    }
+    return -1;
+}
 
 //////////// Tests ////////////
 Array<int>* setup(){
@@ -97,7 +127,7 @@ bool test_push(){
     arr->push(2);
     arr->push(3);
     arr->push(4);
-    arr->print_array();
+    /* arr->print_array(); */
     if(arr->get_size() !=3){return false;}
     if(arr->at(0) != 2){return false;}
     if(arr->at(1) != 3){return false;}
@@ -112,7 +142,7 @@ bool test_insert(){
     arr->insert(2,30);
     arr->insert(3,40);
     arr->insert(0,1);
-    arr->print_array();
+    /* arr->print_array(); */
     if(arr->get_size() != 5){return false;}
     if(arr->at(0) != 1) {return false;}
     if(arr->at(2) != 20){return false;}
@@ -127,7 +157,6 @@ bool test_resize(){
         arr->push(i);
     }
     /* arr->print_array(); */
-    cout << "Capacity: "<< arr->get_capacity() << endl;
     /* cout << "size is : " << arr->get_size() << endl; */
     if(arr->get_capacity() != 32){return false;}
     if(arr->get_size() != test_max){return false;}
@@ -159,7 +188,63 @@ bool test_subscript_op(){
     if(arr[2] != 2){return false;}
 
     return true;
+}
+bool test_delete_el(){
+    Array<int> *arr = setup();
+    int test_max = 16;
+    for(int i=0; i< test_max; i++){
+        arr->push(i);
+    }
 
+    /* arr->print_array(); */
+    /* cout << "size: " << arr->get_size() << endl; */
+    if(arr->get_size() !=16){return false;}
+    arr->delete_el(2);
+    /* cout << "size: " << arr->get_size() << endl; */
+    /* arr->print_array(); */
+    if(arr->at(2) == 2){return false;}
+    arr->delete_el(1);
+    cout << "size: " << arr->get_size() << endl;
+    /* arr->print_array(); */
+    if(arr->at(1) == 1){return false;}
+    arr->delete_el(12);
+    /* arr->print_array(); */
+    return true;
+}
+bool test_find(){
 
+    Array<int> *arr = setup();
+    int test_max = 16;
+    for(int i=0; i< test_max; i++){
+        arr->push(i);
+    }
+
+    if(arr->find(5)!=5){return false;}
+    if(arr->find(6)!=6){return false;}
+    if(arr->find(7)!=7){return false;}
+    if(arr->find(20)!= -1){return false;}
+    return true;
+}
+bool test_remove(){
+    Array<int> *arr = setup();
+    int test_max = 16;
+    for(int i=0; i< test_max; i++){
+        arr->push(i);
+    }
+    arr->push(5);
+    arr->push(5);
+    arr->push(5);
+    cout << "size: " << arr->get_size() << endl;
+    arr->print_array();
+    if(arr->get_size() != 19){return false;}
+    arr->remove(5);
+    cout << "size: " << arr->get_size() << endl;
+    arr->print_array();
+    if(arr->get_size() != 16){return false;}
+    arr->remove(1);
+    cout << "size: " << arr->get_size() << endl;
+    arr->print_array();
+    if(arr->get_size() != 15){return false;}
+    return true;
 }
 
