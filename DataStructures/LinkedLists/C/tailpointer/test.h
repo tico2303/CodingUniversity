@@ -29,4 +29,6 @@ void test_value_n_from_end();
 
 void test_reverse();
 
+void test_remove_value();
+
 #endif
